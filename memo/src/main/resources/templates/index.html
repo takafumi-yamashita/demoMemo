@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>メモアプリ</title>
+</head>
+<body>
+<div th:insert="~{common/sourceList :: sourceList}"></div>
+	<div class="container-fluid m-3">
+		<h1>メモアプリ</h1>
+		<!--Create-->
+		<form th:action="@{/add}" th:object="${memo}" method="post">
+			<div class="d-flex">
+				<label class="form-label" for="content">Memo：</label>
+				<input class="w-auto form-control" type="text" th:field="*{title}" placeholder="タイトル">
+			</div>
+			<textarea class="w-auto form-control" type="text" th:field="*{content}" rows="3"></textarea>
+			<button class="btn btn-primary">登録</button>
+		</form>
+		
+		<br>
+		<h2>メモ一覧</h2>
+		<div th:if="${memos.size() == 0}">メモがありません。</div>
+		<div th:if="${memos.size() > 0}">
+			<!--Read & Edit-->
+			<div class="mb-4" th:each="memo : ${memos}"><!--th:each 繰り返し処理をおこなう-->
+				<form th:action="@{/edit}" th:object="${memo}" method="post" style="display: inline">
+					<input type="hidden" name="id" th:value="*{id}">
+					<label for="id">[[*{id}]]：</label>
+					<input type="text" name="title" th:value="*{title}">
+					<input type="text" name="content" th:value="*{content}">
+					<label for="createdAt">[[*{createdAt}]]：</label>
+					<label for="updatedAt">[[*{updatedAt}]]：</label>
+					<button class="btn btn-primary">更新</button>
+				</form>
+				<!--Delete-->
+				<a class="btn btn-primary ps-1" th:href="@{/delete/{id}(id=${memo.id})}">ゴミ箱</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
