@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-@Entity  //データの入れ物であるEntityクラスであることを指定する
+@Entity //データの入れ物であるEntityクラスであることを指定する
 @Table(name = "memo") //テーブル名を設定
 @Data //全フィールドに対してgetter/setterでアクセスすることができる
 public class Memo {
@@ -27,10 +28,18 @@ public class Memo {
 	private boolean deleted;
 	// 作成日
 	@CreationTimestamp
-	@Column(name = "createdAt",updatable = false)
-    private LocalDateTime createdAt;
+	@Column(name = "createdAt", updatable = false)
+	private LocalDateTime createdAt;
 	// 更新日
 	@UpdateTimestamp
 	@Column(name = "updatedAt")
 	private LocalDateTime updatedAt;
+
+	public LocalDate getCreatedDate() {
+		return createdAt.toLocalDate();
+	}
+
+	public LocalDate getUpdatedDate() {
+		return updatedAt.toLocalDate();
+	}
 }
